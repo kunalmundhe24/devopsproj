@@ -13,7 +13,7 @@ pipeline {
                     branch: 'main',
                     url: 'https://github.com/NirikshaShivalkar/DevOps-ToDo.git'
                 )
-                bat "dir /s"  // Debugging: List all files after cloning
+                bat "dir /s"  // Debugging: List files after cloning
             }
         }
 
@@ -61,34 +61,6 @@ pipeline {
                 '''
             }
         }
-
-        stage('Build & Deploy') {
-            when {
-                expression { return currentBuild.result == null || currentBuild.result == 'SUCCESS' }
-            }
-            steps {
-                bat '''
-                    echo "🚀 Deploying the app..."
-                    call venv\\Scripts\\activate
-
-                    echo "🔹 Checking if app.py exists..."
-                    if not exist app.py (
-                        echo "❌ ERROR: app.py not found!"
-                        exit /b 1
-                    )
-
-                    echo "🔹 Starting Flask application..."
-                    python app.py
-
-                    if errorlevel 1 (
-                        echo "❌ ERROR: Failed to start Flask application!"
-                        exit /b 1
-                    )
-
-                    echo "✅ Application deployed successfully!"
-                '''
-            }
-        }
     }
 
     post {
@@ -96,10 +68,10 @@ pipeline {
             junit 'report.xml'
         }
         failure {
-            echo '❌ Test Failed! Stopping Deployment.'
+            echo '❌ Test Failed! Stopping here.'
         }
         success {
-            echo '✅ All tests passed! Application deployed successfully.'
+            echo '✅ All tests passed! You can build or deploy in the future.'
         }
     }
 }
