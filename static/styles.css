@@ -1,0 +1,132 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Centered App Container */
+.container {
+    width: 400px;
+    background: rgb(255, 255, 255);
+    padding: 20px;
+    border-radius: 10px;
+    border: 3px solid rgb(0, 0, 0);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    /* Ensures padding does not overflow */
+}
+
+/* Title */
+h1 {
+    color: rgb(0, 0, 0);
+    margin-bottom: 20px;
+}
+
+/* Form Container */
+.form-container {
+    width: 100%;
+}
+
+/* Input Form */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    width: calc(100% - 22px);
+    /* Adjust width to prevent overflow */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    /* Ensures padding is included in width */
+}
+
+/* Button */
+button {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+}
+
+button:hover {
+    background: #218838;
+}
+
+/* Task List */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Task Items */
+li {
+    background: white;
+    padding: 10px;
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease;
+    border: 1px solid #ccc;
+    /* Added border for task items */
+}
+
+li:hover {
+    background: #f1f1f1;
+}
+
+/* Completed Task */
+.completed {
+    text-decoration: line-through;
+    color: #777;
+}
+
+/* Action Buttons */
+.complete,
+.delete {
+    text-decoration: none;
+    font-size: 18px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+/* Green ✔ for completion */
+.complete {
+    color: white;
+    background: #28a745;
+}
+
+.complete:hover {
+    background: #218838;
+}
+
+/* Red ❌ for deletion */
+.delete {
+    color: white;
+    background: #dc3545;
+}
+
+.delete:hover {
+    background: #c82333;
+}
