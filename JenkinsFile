@@ -35,7 +35,7 @@ pipeline {
                         exit /b 1
                     )
 
-                    echo "🔹 Upgrading pip and installing dependencies..."
+                    echo "🔹 Installing dependencies..."
                     python -m pip install --upgrade pip
                     python -m pip install -r requirements.txt
 
@@ -61,6 +61,23 @@ pipeline {
                 '''
             }
         }
+
+        stage('Docker Build & Deploy') {
+            steps {
+                bat '''
+                    echo "🐳 Stopping existing containers (if any)..."
+                    docker-compose down || echo "No containers running."
+
+                    echo "🐳 Building and starting containers..."
+                    docker-compose up --build -d
+
+                    if errorlevel 1 (
+                        echo "❌ Docker Compose failed!"
+                        exit /b 1
+                    )
+                '''
+            }
+        }
     }
 
     post {
@@ -68,10 +85,10 @@ pipeline {
             junit 'report.xml'
         }
         failure {
-            echo '❌ Test Failed! Stopping here.'
+            echo '❌ Pipeline failed!'
         }
         success {
-            echo '✅ All tests passed! You can build or deploy in the future.'
+            echo '✅ Pipeline completed successfully! App deployed via Docker.'
         }
     }
 }
