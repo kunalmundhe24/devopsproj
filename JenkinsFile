@@ -11,7 +11,7 @@ pipeline {
                 git(
                     credentialsId: 'c7c078f8-e44a-4217-a0ba-0e48a22bfd02',
                     branch: 'main',
-                    url: 'https://github.com/NirikshaShivalkar/flask-projectt.git'
+                    url: 'https://github.com/NirikshaShivalkar/DevOps-ToDo.git'
                 )
                 bat "dir /s"  // Debugging: List all files after cloning
             }
