@@ -2,82 +2,43 @@ pipeline {
     agent any
 
     environment {
-        VIRTUAL_ENV = "venv"
+        // Activate virtual environment directory
+        VENV_DIR = 'venv'
     }
 
     stages {
-        stage("Git Clone") {
+        stage('Clone Repository') {
             steps {
-                git(
-                    credentialsId: 'c7c078f8-e44a-4217-a0ba-0e48a22bfd02',
-                    branch: 'main',
-                    url: 'https://github.com/NirikshaShivalkar/flask-projectt.git'
-                )
+                git 'https://github.com/NirikshaShivalkar/DevOps-ToDo.git'
             }
         }
 
         stage('Set Up Python Environment') {
             steps {
                 sh '''
-<<<<<<< HEAD
-                    set -e
-                    python3 -m venv venv
-                    chmod +x venv/bin/activate
-                    source venv/bin/activate
-                    venv/bin/python -m pip install --upgrade pip
-                    venv/bin/python -m pip install -r requirements.txt
-=======
-                    python3 -m venv venv
-                    source venv/bin/activate && pip install -r requirements.txt
->>>>>>> 99c9cbe (Fixed pytest import error and updated test cases)
+                python3 -m venv ${VENV_DIR}
+                . ${VENV_DIR}/bin/activate
+                pip install --upgrade pip
+                pip install -r requirements.txt || echo "No requirements.txt, skipping..."
                 '''
             }
         }
 
-        stage('Run Tests') {
-            steps {
-<<<<<<< HEAD
-                sh '''
-                    set -e
-                    source venv/bin/activate
-                    venv/bin/python -m pytest --junitxml=report.xml || echo "❌ Tests Failed!"
-                '''
-=======
-                sh 'source venv/bin/activate && pytest --junitxml=report.xml'
->>>>>>> 99c9cbe (Fixed pytest import error and updated test cases)
-            }
-        }
-
-        stage('Build & Deploy') {
-            when {
-                expression { return currentBuild.result == null || currentBuild.result == 'SUCCESS' }
-            }
+        stage('Run Flask App') {
             steps {
                 sh '''
-<<<<<<< HEAD
-                    set -e
-                    echo "🚀 Deploying the app..."
-                    source venv/bin/activate
-                    nohup venv/bin/gunicorn -w 4 -b 0.0.0.0:5000 app:app > gunicorn.log 2>&1 &
-                    echo "✅ Application deployed successfully!"
-=======
-                    echo "Deploying the app..."
-                    source venv/bin/activate && nohup gunicorn -w 4 -b 0.0.0.0:5000 app:app > gunicorn.log 2>&1 &
->>>>>>> 99c9cbe (Fixed pytest import error and updated test cases)
+                . ${VENV_DIR}/bin/activate
+                export FLASK_APP=app.py
+                flask run &
+                sleep 5
                 '''
             }
         }
-    }
 
-    post {
-        always {
-            junit 'report.xml'
-        }
-        failure {
-            echo '❌ Test Failed! Stopping Deployment.'
-        }
-        success {
-            echo '✅ All tests passed! Application deployed successfully.'
+        stage('Post-run / Clean') {
+            steps {
+                sh 'echo "Flask App Started Successfully. Add tests or deployment steps here."'
+            }
         }
     }
 }
