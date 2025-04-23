@@ -5,10 +5,7 @@ import os
 # Ensure the application path is included
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from app import app  # Ensure 'app.py' is detected
-
-@pytest.fixture
-from app import app, notes  # <-- also import the notes list
+from app import app, notes  # Import the app and the notes list
 
 @pytest.fixture
 def client():
@@ -16,11 +13,10 @@ def client():
     app.config["TESTING"] = True
     client = app.test_client()
     
-    # Clear notes before each test
+    # Clear notes before each test to ensure isolation
     notes.clear()
 
-    yield client
-
+    yield client  # Return the test client for use in tests
 
 def test_homepage(client):
     """Tests if the homepage loads successfully."""
