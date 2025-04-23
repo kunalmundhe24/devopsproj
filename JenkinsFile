@@ -49,19 +49,19 @@ pipeline {
         }
 
         stage('Run Tests') {
-            steps {
-                bat '''
-                    echo "🔹 Running Tests..."
-                    call venv\\Scripts\\activate
-                    pytest --junitxml=report.xml
+    steps {
+        bat '''
+            echo "🔹 Running Tests..."
+            venv\\Scripts\\python.exe -m pytest --junitxml=report.xml
 
-                    if errorlevel 1 (
-                        echo "❌ Tests Failed!"
-                        exit /b 1
-                    )
-                '''
-            }
-        }
+            if errorlevel 1 (
+                echo "❌ Tests Failed!"
+                exit /b 1
+            )
+        '''
+    }
+}
+
 
         stage('Docker Build & Deploy') {
             steps {
