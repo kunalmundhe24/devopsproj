@@ -11,7 +11,7 @@ pipeline {
                 git(
                     credentialsId: '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',
                     branch: 'main',
-                    url: 'https://github.com/NirikshaShivalkar/DevOps-ToDo.git'
+                    url: 'https://github.com/kunalmundhe24/devopsproj.git'
                 )
                 bat "dir /s"  // Debugging: List files after cloning
             }
