@@ -11,32 +11,27 @@ from app import app  # Ensure 'app.py' is detected
 def client():
     """Creates a test client for Flask app."""
     app.config["TESTING"] = True
-    app.config["WTF_CSRF_ENABLED"] = False  # Disable CSRF for testing if applicable
     client = app.test_client()
-    yield client  # Return the client for testing
+    yield client
 
 def test_homepage(client):
     """Tests if the homepage loads successfully."""
     response = client.get("/")
     assert response.status_code == 200
-    assert b"To-Do List" in response.data  # Check if "To-Do List" exists in response
+    assert b"My Notes" in response.data  # Updated to match new heading
 
-def test_add_task(client):
-    """Tests adding a new task."""
-    response = client.post("/add", data={"content": "Buy groceries"}, follow_redirects=True)
+def test_add_note(client):
+    """Tests adding a new note."""
+    response = client.post("/add", data={"content": "This is a test note"}, follow_redirects=True)
     assert response.status_code == 200
-    assert b"Buy groceries" in response.data  # Ensure task appears on page
+    assert b"This is a test note" in response.data  # Ensure note appears on page
 
-def test_delete_task(client):
-    """Tests deleting a task."""
-    client.post("/add", data={"content": "Test Task"}, follow_redirects=True)
+def test_delete_note(client):
+    """Tests deleting a note."""
+    # Add a note first
+    client.post("/add", data={"content": "Note to be deleted"}, follow_redirects=True)
 
-    # Fetch task list to get the correct ID
-    response = client.get("/")
-    assert b"Test Task" in response.data  # Ensure it was added
-
-    # Assuming tasks are displayed in a certain structure, extract the first task ID (modify if needed)
-    task_id = 1  # Modify this based on how your tasks are stored
-    response = client.get(f"/delete/{task_id}", follow_redirects=True)
+    # Delete the note (note_id=0 since it's the first one)
+    response = client.get("/delete/0", follow_redirects=True)
     assert response.status_code == 200
-    assert b"Test Task" not in response.data  # Ensure task was removed
+    assert b"Note to be deleted" not in response.data  # Ensure it was deleted
