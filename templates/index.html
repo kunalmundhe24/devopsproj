@@ -4,27 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List</title>
+    <title>Notes App</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
 <body>
     <div class="container">
-        <h1>To-Do List Project app</h1>
+        <h1>My Notes</h1>
 
-        <!-- Task Input Form -->
-        <form action="{{ url_for('add_task') }}" method="post">
-            <input type="text" name="content" placeholder="New Task" required>
-            <button type="submit">Add</button>
+        <!-- Note Input Form -->
+        <form action="{{ url_for('add_note') }}" method="post">
+            <textarea name="content" placeholder="Write your note here..." required></textarea>
+            <button type="submit">Add Note</button>
         </form>
 
-        <!-- Task List -->
+        <!-- Notes List -->
         <ul>
-            {% for task in tasks %}
-            <li class="{% if task.completed %}completed{% endif %}">
-                {{ task.content }}
-                <a href="{{ url_for('complete_task', task_id=loop.index0) }}" title="Mark as complete">✔</a>
-                <a href="{{ url_for('delete_task', task_id=loop.index0) }}" title="Delete task">❌</a>
+            {% for note in notes %}
+            <li>
+                {{ note.content }}
+                <a href="{{ url_for('delete_note', note_id=loop.index0) }}" title="Delete note">❌</a>
             </li>
             {% endfor %}
         </ul>
