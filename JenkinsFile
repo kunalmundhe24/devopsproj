@@ -14,7 +14,7 @@ pipeline {
                     branch: 'main',
                     url: 'https://github.com/kunalmundhe24/devopsproj.git'
                 )
-                bat "dir /s"  // Debugging: List files after cloning
+                bat "dir /s"
             }
         }
 
@@ -22,10 +22,10 @@ pipeline {
             steps {
                 bat '''
                     echo "🔹 Checking if Python is installed..."
-                    python --version || exit /b 1
+                    %PYTHON% --version || exit /b 1
 
                     echo "🔹 Creating virtual environment..."
-                    python -m venv venv
+                    %PYTHON% -m venv venv
 
                     echo "🔹 Activating virtual environment..."
                     call venv\\Scripts\\activate
@@ -37,8 +37,8 @@ pipeline {
                     )
 
                     echo "🔹 Installing dependencies..."
-                    python -m pip install --upgrade pip
-                    python -m pip install -r requirements.txt
+                    %PYTHON% -m pip install --upgrade pip
+                    %PYTHON% -m pip install -r requirements.txt
 
                     if errorlevel 1 (
                         echo "❌ ERROR: Dependency installation failed!"
