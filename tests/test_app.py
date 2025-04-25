@@ -22,7 +22,7 @@ def test_homepage(client):
     """Tests if the homepage loads successfully."""
     response = client.get("/")
     assert response.status_code == 200
-    assert b"My Notes" in response.data  # Updated to match new heading
+    assert b"Notes App" in response.data  # Updated to match new heading
 
 def test_add_note(client):
     """Tests adding a new note."""
